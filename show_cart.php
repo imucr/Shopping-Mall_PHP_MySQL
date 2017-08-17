@@ -29,6 +29,25 @@ foreach에서 $isbn 인덱스명을 쓰는 줄 알았는데,
     session_start();
     //session_unset();
     //session_destroy();
+
+    
+//장바구니 총합계 구하는 함수
+    function sum_price($cart){
+        $price=0;
+        if(is_array($cart)){
+            foreach($cart as $isbn => $qty){
+                $sql="select price from books where isbn='".$isbn."'";
+                $result=$db->query($sql);
+                if($result){
+                    $item=$result->fetch_object();
+                    $item_price=$item->price;
+                    $price+=$item_price*qty;                    
+                }
+            }
+        }
+        return $price;
+    }
+
     
 //---------------------------------------------------------------------------------------
 //추가할 상품이 있는 경우([장바구니] 버튼을 클릭했을 때)

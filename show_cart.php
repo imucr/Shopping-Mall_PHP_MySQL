@@ -1,15 +1,26 @@
 <!--
 
-*1. 궁금점-?X
+*1. -?X
 $_SESSION['cart'][$new]++; 
 여기서 $_SESSION['cart'] 자체가 변수명? 아님 $_SESSION만?
 막연히 이건 연관배열과 관련이 있구나라고밖에 생각 못하겠음
 cf) https://stackoverflow.com/questions/15979952/shopping-cart-session-php
 
-->
-"$_SESSION['cart'] 자체가 연관배열의 변수명이다. 
-새롭게 상품 추가 시 'named index인 $new'에 '배열값 1'이 할당되고, -구분 주의!
-이후 같은 상품 추가 시엔 할당된 값이 1씩 올라간다"
+    A.추측"$_SESSION['cart'] 자체가 연관배열의 변수명이다. 
+    새롭게 상품 추가 시 'named index인 $new'에 '배열값 1'이 할당되고, -구분 주의!
+    이후 같은 상품 추가 시엔 할당된 값이 1씩 올라간다"
+
+    A.추측2"cart에는 $가 안 붙었으니, 당연히 $_SESSION['cart'] 자체가 변수명이다...
+
+
+*2.
+추측"show_book.php에서 url로 new=".$isbn."'라고 받아왔기에
+foreach에서 $isbn 인덱스명을 쓰는 줄 알았는데,
+그냥 '인덱스명 -> 배열 요소' 구조에 맞게만 쓰면 다른 인덱스명을 써도 되는 걸지도"
+
+
+*3
+변경하는 것은 수량($qty)인데, 왜 isbn을 건드릴까 -?
 
 -->
 
@@ -48,7 +59,7 @@ if(isset($_GET['new'])){
         //전체 상품 수량 합계 구하기
         if(is_array($_SESSION['cart'])){
             $_SESSION['items']=0;
-            foreach($_SESSION['cart'] as $isbn => $qty){
+            foreach($_SESSION['cart'] as $isbn => $qty){ //*2
                 $_SESSION['items'] += $qty; //"ex) 3+2+5+4... feat.sum=sum+1"
             }
             
@@ -77,7 +88,42 @@ if(isset($_GET['new'])){
 //현재 장바구니 페이지에서 [새로고침] 버튼을 클릭했을 때, 수량 및 총합계를 재계산
 //---------------------------------------------------------------------------------------    
 
-
+    if(isset($_POST['refresh'])){
+        foreach($_SESSION['cart'] as $isbn => $qty){
+            if($_POST[$isbn]=='0'){ //*3
+                unset($_SESSION['cart']['$isbn']);                
+            }else{
+                $_SESSION['cart'][$isbn]=$_POST[$isbn];
+            }
+        }//End of foreach문
+        
+        
+        //총합계 재계산(=기존 총합계 계산)-----------------
+        if(is_array($_SESSION['cart'])){
+            $_SESSION['total_price']=0;
+            foreach($_SESSION['cart'] as $isbn=>$qty){
+                $sql="select price from books where isbn='".$isbn."'";
+                $result=$db->query($sql);
+                if($result){
+                    $item=$result->fetch_object();
+                    $item_price = $item->price;
+                    $_SESSION['total_price'] += $item_price*$qty;
+                }
+            }//End of foreach문
+            
+        }
+        
+        //총수량 재계산(=기존 총수량 계산)-----------------
+        if(is_array($_SESSION['cart'])){
+            $_SESSION['items']=0;
+            foreach($_SESSION['cart'] as $isbn => $qty){
+                $_SESSION['items'] += $qty;
+            }
+            
+        }
+        
+        
+    }
 
     require_once './header.php';
 
@@ -146,9 +192,10 @@ if(isset($_GET['new'])){
         
         //수량 수정 후, 수정된 내용을 저장하기 위한 '새로고침' 버튼 추가
         echo "<tr>"
-                ."<td colspan='5' align='right'>"
-                ."<input type='submit' value='새로고침'/>"
-                ."</td>"
+                    ."<td colspan='5' align='right'>"
+                    ."<input type='hidden' name='refresh' value='true'/>"
+                    ."<input type='submit' value='새로고침'/>"
+                    ."</td>"
                 ."</tr>";
 
         echo "</form></table><hr/>";        

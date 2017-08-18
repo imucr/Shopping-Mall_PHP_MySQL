@@ -1,11 +1,12 @@
 <?php
-
-    $db=new mysqli('localhost', 'root', 'imlearner', 'sm');
+    function db_conn(){
+        $db=new mysqli('localhost', 'root', 'imlearner', 'sm');
     
-    if($db->connect_error){
-        die('데이터베이스 연결에 문제가 발생했습니다. 관리자에게 문의 바랍니다!!');
-    }
+        if($db->connect_error){
+            die('데이터베이스 연결에 문제가 발생했습니다. 관리자에게 문의 바랍니다!!');
+        }
     
-    $db->set_charset('utf8');
-    
+        $db->set_charset('utf8');
+        return $db;
+    }    
 ?>

@@ -30,6 +30,7 @@ cat_name을 클릭하면 show_category.php로 이동한다
     require_once("./dbconfig.php");
     
     $sql='select cat_id, cat_name from categories';
+    $db= db_conn();
     $result=$db->query($sql); //*1
     
     

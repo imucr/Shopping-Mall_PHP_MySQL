@@ -27,6 +27,7 @@ vs. fetch_array, fetch_assoc, fetch_row
 
 //*1      
     $sql = "select cat_name from categories where cat_id='".$cat_id."'";
+    $db= db_conn();
     $result = $db->query($sql);
     if($result){
         $num_cats = $result->num_rows;
@@ -43,6 +44,7 @@ vs. fetch_array, fetch_assoc, fetch_row
         
 //*2          
         $sql="select * from books where cat_id = '".$cat_id."'";
+        $db= db_conn();
         $result = $db->query($sql);
         if($result){
             $num_books = $result->num_rows;

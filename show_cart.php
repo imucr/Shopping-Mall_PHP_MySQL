@@ -10,7 +10,7 @@ cf) https://stackoverflow.com/questions/15979952/shopping-cart-session-php
     새롭게 상품 추가 시 'named index인 $new'에 '배열값 1'이 할당되고, -구분 주의!
     이후 같은 상품 추가 시엔 할당된 값이 1씩 올라간다"
 
-    A.추측2"cart에는 $가 안 붙었으니, 당연히 $_SESSION['cart'] 자체가 변수명이다...
+    A.추측2"cart에는 $가 안 붙었으니, 당연히 $_SESSION['cart'] 자체가 변수명이다..."
 
 
 *2.
@@ -22,6 +22,18 @@ foreach에서 $isbn 인덱스명을 쓰는 줄 알았는데,
 *3
 변경하는 것은 수량($qty)인데, 왜 isbn을 건드릴까 -?
 
+
+*4
+$_SESSION['cart']를 받아오는 건가부지...
+-> 하단 코드를 보면 $_SESSION['total_price']= sum_price($_SESSION['cart']); 이걸 확인할 수 있다. 즉 내 생각이 맞음.
+
+
+*5
+아래의 예를 봐선 $_SESSION['~~~']이 꼭 array라는 법은 없는 듯하다.
+$_SESSION['cart']=array();
+$_SESSION['items']=0;
+$_SESSION['total_price']=0;
+
 -->
 
 <?php
@@ -31,23 +43,35 @@ foreach에서 $isbn 인덱스명을 쓰는 줄 알았는데,
     //session_destroy();
 
     
-//장바구니 총합계 구하는 함수
+//*4. 장바구니 총합계 구하는 함수
     function sum_price($cart){
         $price=0;
         if(is_array($cart)){
             foreach($cart as $isbn => $qty){
                 $sql="select price from books where isbn='".$isbn."'";
+                $db= db_conn();
                 $result=$db->query($sql);
                 if($result){
                     $item=$result->fetch_object();
                     $item_price=$item->price;
-                    $price+=$item_price*qty;                    
+                    $price+=$item_price*$qty;                    
                 }
             }
         }
         return $price;
     }
 
+    
+//장바구니 총수량을 구하는 함수
+    function sum_items($cart){
+        $items=0;
+        if(is_array($cart)){
+            foreach($cart as $isbn => $qty){
+                $items+=$qty;
+            }
+        }
+        return $items;
+    }
     
 //---------------------------------------------------------------------------------------
 //추가할 상품이 있는 경우([장바구니] 버튼을 클릭했을 때)
@@ -59,7 +83,7 @@ if(isset($_GET['new'])){
     if($new){
         if(!isset($_SESSION['cart'])){
             //등록된 세션 변수가 없으면 세션 변수를 등록
-            $_SESSION['cart']=array();
+            $_SESSION['cart']=array(); //*5
             //상품갯수
             $_SESSION['items']=0;
             $_SESSION['total_price']=0;
@@ -76,29 +100,13 @@ if(isset($_GET['new'])){
         }
         
         //전체 상품 수량 합계 구하기
-        if(is_array($_SESSION['cart'])){
-            $_SESSION['items']=0;
-            foreach($_SESSION['cart'] as $isbn => $qty){ //*2
-                $_SESSION['items'] += $qty; //"ex) 3+2+5+4... feat.sum=sum+1"
-            }
-            
-        }
+        $_SESSION['items']=sum_items($_SESSION['cart']);
+        
         
         //장바구니 총합계 구하기
-        if(is_array($_SESSION['cart'])){
-            $_SESSION['total_price']=0;
-            foreach($_SESSION['cart'] as $isbn=>$qty){
-                $sql="select price from books where isbn='".$isbn."'";
-                $result=$db->query($sql);
-                if($result){
-                    $item=$result->fetch_object(); //result는 객체가 아니었나부지 뭐. 그러려니.
-                    $item_price = $item->price;
-                    $_SESSION['total_price'] += $item_price*$qty;
-                }
-            }//End of foreach문
-            
-        }
-    }//end of if문
+        $_SESSION['total_price']= sum_price($_SESSION['cart']);
+        
+    }
 }    
 
 
@@ -116,30 +124,12 @@ if(isset($_GET['new'])){
             }
         }//End of foreach문
         
+
+        //총수량 재계산(=기존 총수량 계산)-----------------
+        $_SESSION['items']=sum_items($_SESSION['cart']);
         
         //총합계 재계산(=기존 총합계 계산)-----------------
-        if(is_array($_SESSION['cart'])){
-            $_SESSION['total_price']=0;
-            foreach($_SESSION['cart'] as $isbn=>$qty){
-                $sql="select price from books where isbn='".$isbn."'";
-                $result=$db->query($sql);
-                if($result){
-                    $item=$result->fetch_object();
-                    $item_price = $item->price;
-                    $_SESSION['total_price'] += $item_price*$qty;
-                }
-            }//End of foreach문
-            
-        }
-        
-        //총수량 재계산(=기존 총수량 계산)-----------------
-        if(is_array($_SESSION['cart'])){
-            $_SESSION['items']=0;
-            foreach($_SESSION['cart'] as $isbn => $qty){
-                $_SESSION['items'] += $qty;
-            }
-            
-        }
+        $_SESSION['total_price']= sum_price($_SESSION['cart']);
         
         
     }
@@ -176,6 +166,7 @@ if(isset($_GET['new'])){
                 exit;                
             }
             $sql="select * from books where isbn='".$isbn."'";
+            $db= db_conn();
             $result=$db->query($sql);
             if($result){
                 $row=$result->fetch_array();

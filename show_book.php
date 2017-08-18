@@ -16,6 +16,7 @@
    }
    
    $sql="select * from books where isbn ='".$isbn."'";
+   $db= db_conn();
    $result = $db->query($sql);
 
    if($result){

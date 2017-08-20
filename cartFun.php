@@ -1,5 +1,5 @@
 <?php
-    function show_cart($cart){
+    function show_cart($cart, $modify=true){
 
         echo "<table border='0' width='100%' cellspacing='0'>"
                 ."<form action='show_cart.php' method='post'>"
@@ -43,7 +43,14 @@
                     ." 저자: ".$row['author']."</td>"
                     ."<td align='center'>".number_format($row['price'])."원</td>"
                     ."<td align='center'>";
-            echo "<input type='text' name='".$isbn."'value='".$qty."' size='3'>";
+            
+            if($modify==true){
+                    echo "<input type='text' name='".$isbn."'value='".$qty."' size='3'>";
+            }else{
+                    echo $qty;
+            }
+            
+            
             echo "</td><td align='center'>".number_format($row['price']*$qty)."원</td></tr>\n";
         }//End of foreach문----------------------
                 
@@ -55,13 +62,14 @@
                 ."<td align='center' bgcolor='#F1C40F'>총 합계: ".number_format($_SESSION['total_price'])."원</td></tr>";
         
         //수량 수정 후, 수정된 내용을 저장하기 위한 '새로고침' 버튼 추가
+        if($modify==true){
         echo "<tr>"
                     ."<td colspan='5' align='right'>"
                     ."<input type='hidden' name='refresh' value='true'/>"
                     ."<input type='submit' value='새로고침'/>"
                     ."</td>"
                 ."</tr>";
-
+        }
         echo "</form></table><hr/>";        
         
     }

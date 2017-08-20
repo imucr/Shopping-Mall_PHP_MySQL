@@ -10,7 +10,7 @@
     echo "<h3>주문 정보 입력하기</h3>";
     
     if(isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))){
-        show_cart($_SESSION['cart']);
+        show_cart($_SESSION['cart'], false);
  
 ?>
 <br/><br/>

@@ -6,6 +6,20 @@
     extract($arr) 시
     $j = 100, $i = 10 식으로 키 값을 변수화시켜준다
 
+
+*2. 트랜잭션이란, 
+a, b, c 명령이 있다면 이 세 개 모두 성공적 수행되었을 떄 처리(db 반영) 되도록 하는 것.
+    ex) a계좌에서 b계좌로 이체: 출금, 입금 모두 수행되어야 거래 처리
+autocommit이 true이면 a, b만 정상이어도 처리가 되기에(=rollback이 안 됨), false로 바꿔줘야 함
+
+
+*3. custome_id 필드에는 값을 안 넣겠다는 것.
+
+*4
+customers tb에 customer_id 없으면, 주문자 정보 입력
+테이블에 주문자 정보가 있는 경우에는, custom_id값을 얻어온다.
+테이블에 주문자 정보가 없는 경우에는, 주문자 정보를 입력하고, 입력된 주문자 정보의 custom_id를 얻어온다
+
 -->
 
 <?php
@@ -20,19 +34,60 @@
     //주문 정보 받아오기
     $name = $_POST['name'];
     $zipcode = $_POST['zipcode'];
-    $address = $_POST['zddress'];
+    $address = $_POST['address'];
     
     if($_SESSION['cart'] && $name && $zipcode && $address){
         
         //*1
         extract($_POST);
         
-        //DB orders 테이블에 저장
+        //수령인 정보가 있는지 체크 후, DB orders 테이블에 저장
         if(empty($ship_name) && empty($ship_zipcode) && empty($ship_address)){
             $ship_name=$name;
             $ship_zipcode=$zipcode;
             $ship_address=$address;
         }
+        
+        
+        $db= db_conn();
+        
+//트랜잭션 시작 처리 *2
+        $db->autocommit(FALSE);
+        
+        
+//*4
+        $sql="select custom_id from customers where name='".$name."' and address='".$address."' and zipcode='".$zipcode."'";
+        
+        $result = $db->query($sql);
+
+        if($result->num_rows > 0){  
+            $customer=$result->fetch_object();
+            $customer_id=$customer->custom_id;        
+        }else{
+            $sql="insert into customers values('','".$name."', '".$address."', '".$zipcode."')"; //*3
+            $result=$db->query($sql);
+            
+            if(!$result){
+?>
+                <script>
+                    alert("오류가 발생했습니다!!!!");
+                    history.back();
+                </script>
+            <?php
+                exit;
+            }
+                    
+                $custom_id=$db->insert_id;
+            }
+                   
+        
+//orders tb에 배송정보 입력
+        
+//트랜잭션 끝
+        $db->commit();
+        $db->autocommit(TRUE);        
+   
+                
     }
     
 ?>

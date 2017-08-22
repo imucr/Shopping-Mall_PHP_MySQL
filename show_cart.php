@@ -12,6 +12,9 @@ cf) https://stackoverflow.com/questions/15979952/shopping-cart-session-php
 
     A.추측2"cart에는 $가 안 붙었으니, 당연히 $_SESSION['cart'] 자체가 변수명이다..."
 
+    A.추측3"multidimentional array이다" 연관배열과 연관배열 조합도 가능하나 -?
+
+
 
 *2.
 추측"show_book.php에서 url로 new=".$isbn."'라고 받아왔기에

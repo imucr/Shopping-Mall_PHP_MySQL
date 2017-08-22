@@ -12,6 +12,11 @@
 아니라면 for문을 이용하여 내용물을 싹다 끄집어내 출력한다.
 
 
+*3.
+추측 "books_array 배열의 값들을 row라는 변수에 할당하고,
+row의 isbn키가 가리키는 값이 url의 일부가 된다"
+
+
 *fetch_object: 
 배열이 아닌 객체로 가져옴
 vs. fetch_array, fetch_assoc, fetch_row
@@ -65,8 +70,8 @@ vs. fetch_array, fetch_assoc, fetch_row
             }else{
                 echo "<table width='100%' border='0'>";
             
-                foreach($books_array as $row){
-                    $url='show_book.php?isbn='.$row['isbn'];                  
+                foreach($books_array as $row){                    //*3
+                    $url='show_book.php?isbn='.$row['isbn']; //*3                  
                     echo "<tr><td>";
                     if(file_exists("img/".$row['isbn'].".png")){
                         $book_img="<img src='img/".$row['isbn'].".png' style='border: 1px solid black' width=100px height=120px/>";

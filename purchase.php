@@ -79,10 +79,71 @@ customers tb에 customer_id 없으면, 주문자 정보 입력
                     
                 $custom_id=$db->insert_id;
             }
-                   
-        
+            
+            $date=date("Y-m-d"); //주문 날짜
+
+                        
 //orders tb에 배송정보 입력
+       $sql = "insert into orders values('','".$custom_id."','".$_SESSION['total_price']."', '".$date."','주문','".$ship_name."', '".$ship_address."','".$ship_zipcode."')";
         
+       $result=$db->query($sql);
+       if(!$result){
+           ?>
+                <script>
+                    alert('데이터베이스 오류 발생!!!');
+                    history.back();
+                </script>
+                <?php
+                exit;
+       }
+
+       
+//order_id 값을 얻어오기
+       $sql = "select order_id from orders where custom_id='".$custom_id."' and amount=".$_SESSION['total_price']." and date = '".$date."' and order_status='주문' and ship_name='".$ship_name."' and ship_address ='".$ship_address."' and ship_zipcode = '".$ship_zipcode."'";
+       $result=$db->query($sql);
+       
+       if($result->num_rows>0){
+           $obj = $result->fetch_object();
+           $order_id = $obj->order_id;
+       }else{
+           ?>
+           <script>
+               alert('주문한 상품 내역이 존재하지 않습니다!!!');
+               history.back();
+           </script>
+           <?php
+           exit;
+       }
+       
+       
+/*주문한 상품들을 order_items tb에 저장한다:
+        books tb에서 isbn으로 주문된 책 정보를 가져오고, */       
+       
+       foreach($_SESSION['cart'] as $isbn => $qty){
+           if(isset($isbn)){
+               $db= db_conn();
+               $sql="select * from books where isbn='".$isbn."'";
+               $result=$db->query($sql);
+               
+               if(!$result){
+                   ?>
+                   <script>
+                       alert("데이터베이스 오류입니다.");
+                       history.back();
+                   </script>
+                       <?php
+                       exit;
+               }
+               
+               $row=$result->fetch_array();
+           }
+           
+           $sql = "insert into order_items values('".$order_id."', '".$isbn."', ".$row['price'].",$qty)";
+           $result = $db->query($sql);
+       }
+       
+       
+       
 //트랜잭션 끝
         $db->commit();
         $db->autocommit(TRUE);        

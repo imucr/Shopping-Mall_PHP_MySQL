@@ -50,8 +50,9 @@ customers tb에 customer_id 없으면, 주문자 정보 입력
         
         
         $db= db_conn();
-        
-//트랜잭션 시작 처리 *2
+//======================================================        
+//트랜잭션 시작 처리: 주문사항을 DB에 입력하기 위한 트랜잭션 *2
+//======================================================           
         $db->autocommit(FALSE);
         
         
@@ -117,11 +118,15 @@ customers tb에 customer_id 없으면, 주문자 정보 입력
        
        
 /*주문한 상품들을 order_items tb에 저장한다:
+        (order_item tb에서, 사전에 해당 isbn과 order_id 있는 행이 있다면 지워준다. 중복 방지)
         books tb에서 isbn으로 주문된 책 정보를 가져오고, */       
        
        foreach($_SESSION['cart'] as $isbn => $qty){
            if(isset($isbn)){
                $db= db_conn();
+               $sql="delete from order_items where order_id='".$order_id."' and isbn='".$isbn."'";
+               $result = $db->query($sql);
+               
                $sql="select * from books where isbn='".$isbn."'";
                $result=$db->query($sql);
                
@@ -140,23 +145,40 @@ customers tb에 customer_id 없으면, 주문자 정보 입력
            
            $sql = "insert into order_items values('".$order_id."', '".$isbn."', ".$row['price'].",$qty)";
            $result = $db->query($sql);
+           
+           if(!$result){
+               ?>
+               <script>
+                   alert("데이터베이스 입력 오류!!!");
+                   history.back();
+               </script>
+               <?php
+               exit;
+           }
        }
        
        
-       
-//트랜잭션 끝
+//======================================================          
+//트랜잭션 끝: 주문사항 DB에 입력 처리 완료
+//======================================================   
         $db->commit();
         $db->autocommit(TRUE);        
-   
+        
+        show_cart($_SESSION['cart'], FALSE);
+        
+        echo "<div align='center'>
+                 <a href='show_cart.php'><img src='img/continue_shopping.png'/></a>
+                 </div>";        
                 
+    }else{
+        echo "<p>주문 정보가 입력되지 않았습니다. 다시 주문사항을 확인하시기 바랍니다!!!</p>";
+        echo "<a href='checkout.php'>뒤로 가기</a>";
     }
     
 ?>
 
     
-<div align="center">
-    <a href="show_cart.php"><img src="img/continue_shopping.png"/></a>
-</div>    
+    
 
 <?php
     require_once './footer.php';

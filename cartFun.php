@@ -25,6 +25,9 @@
             if($result){
                 $row=$result->fetch_array();
             }
+            
+            
+ //tr이 여기서부터 시작됨에 주목.           
             echo "<tr>";
             echo "<td align='left'>";
             

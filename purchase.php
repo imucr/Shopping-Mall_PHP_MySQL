@@ -20,6 +20,12 @@ customers tb에 customer_id 없으면, 주문자 정보 입력
 테이블에 주문자 정보가 있는 경우에는, custom_id값을 얻어온다.
 테이블에 주문자 정보가 없는 경우에는, 주문자 정보를 입력하고, 입력된 주문자 정보의 custom_id를 얻어온다
 
+*5
+위쪽에 이미 존재.
+이걸 놔두면 트랜잭션 오류 일어나서,
+원래는 주문정보가 orders tb - order id 얻어 - order_item tb에 들어가야 하는데,
+order_item tb에 곧바로 들어가버린다.
+
 -->
 
 <?php
@@ -123,7 +129,7 @@ customers tb에 customer_id 없으면, 주문자 정보 입력
        
        foreach($_SESSION['cart'] as $isbn => $qty){
            if(isset($isbn)){
-               $db= db_conn();
+               //$db= db_conn(); *5
                $sql="delete from order_items where order_id='".$order_id."' and isbn='".$isbn."'";
                $result = $db->query($sql);
                
@@ -165,6 +171,14 @@ customers tb에 customer_id 없으면, 주문자 정보 입력
         $db->autocommit(TRUE);        
         
         show_cart($_SESSION['cart'], FALSE);
+        
+        $shipping=2500;
+        echo "<table border='0' width='100%' cellspacing='0'>"
+                    ."<tr><td colspan='4' align='right'> 배송비: </td>"
+                           ."<td align='center'>".number_format($shipping)."원 </td></tr>"
+                    ."<tr><td bgcolor='aquamarine' colspan='4' align='right'>전체 총합계: </td>"
+                           ."<td bgcolor='aquamarine' align='center'>".number_format($shipping+$_SESSION['total_price'])."원</td></tr>"
+                ."</table><br/>";      
         
         echo "<div align='center'>
                  <a href='show_cart.php'><img src='img/continue_shopping.png'/></a>

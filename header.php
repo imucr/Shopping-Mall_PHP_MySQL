@@ -1,6 +1,10 @@
 <!--
 hr: horizontal rule, 가로 줄
-valign: vertical alignment, 셀 안의 내용 위치-->
+valign: vertical alignment, 셀 안의 내용 위치
+
+*1
+background: 입력 후 Ctrl+Space 누르면 색깔 보며 선택 가능. 다른 페이지에서 색 선택 시에도 쓰면 유용!
+-->
 
 
 <html>
@@ -9,7 +13,7 @@ valign: vertical alignment, 셀 안의 내용 위치-->
         
         <style>   
             h3{ color:blue; margin:10px; }
-            hr{ width:80%; text-align:center}
+            hr{ width:80%; text-align:center; } /* *1 */
         </style>
         
     </head>

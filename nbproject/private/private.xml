@@ -3,8 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/show_category_AnalyzingPersonallyForStudy.php</file>
+            <file>file:/C:/xampp/htdocs/cartFun.php</file>
+            <file>file:/C:/xampp/htdocs/orderFunc.php</file>
+            <file>file:/C:/xampp/htdocs/index.php</file>
+            <file>file:/C:/xampp/htdocs/show_book.php</file>
+            <file>file:/C:/xampp/htdocs/show_cart.php</file>
             <file>file:/C:/xampp/htdocs/purchase.php</file>
+            <file>file:/C:/xampp/htdocs/checkout.php</file>
         </group>
     </open-files>
 </project-private>

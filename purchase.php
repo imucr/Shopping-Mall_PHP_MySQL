@@ -32,11 +32,10 @@
 
             display_shipping(); //배송료를 포함한 총합계 구하기
 
-            //결제 사항 정보 출력
+            display_card_form($name); //결제 정보 입력폼 출력
             
-            echo "<div align='center'>
-                     <a href='show_cart.php'><img src='img/continue_shopping.png'/></a>
-                     </div>";        
+
+    
         }else{
             echo "<p>주문 정보 입력 시 오류가 발생하였습니다!! 새로 입력해 주세요!!!</p>";
             echo "<a href='checkout.php'>뒤로 가기</a>";

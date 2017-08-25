@@ -9,6 +9,12 @@
 
     [쇼핑하기]는, [구매하기] 버튼과 나란히 출력하기 위해.
 
+
+*2
+purchase.php로 가는 걸로 해 놓으면, 오류 난다. 
+이렇듯 기술적인 문제로 표현하고 싶은 걸 못 표현하는 경우가 왕왕 발생할 듯.
+이유 -?
+
 -->
 
 <?php
@@ -20,8 +26,9 @@
                 <tr><td bgcolor='aquamarine' colspan='4' align='right'>전체 총합계: </td>
                        <td bgcolor='aquamarine' align='center'><?php echo number_format($shipping+$_SESSION['total_price'])?>원</td></tr>
             </table><br/>     
-
-    
+<?php
+    }
+?>    
     
 <?php
     function display_card_form($name){
@@ -85,7 +92,7 @@
                                     <td colspan="2">
                                         <div align="center" stype="padding:10px">
                                             <input type='image' src='img/buy.png' />
-                                            <a href='show_cart.php'><img src='img/continue_shopping.png'/></a>                                           
+                                            <a href='show_cart.php'><img src='img/continue_shopping.png'/></a> <!--*2-->                                           
                                         </div>
                                     </td>
                                 </tr>
@@ -95,7 +102,4 @@
             </div> 
                         
 <?php
-    }
-
-
     }

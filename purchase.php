@@ -2,6 +2,9 @@
 *1
 주문 정보를 입력하는 중간중간 에러가 발생(return false)하지 않을 때에나, 출력
 
+*2
+checkout.php -> purchase.php -> card_info.php(결제 정보 입력 폼)로 name을 넘겨주려면, get방식으로 넘긴다(url 이용)
+
 *생각 메모:
 긴 코드를 함수화하여 별도 페이지로 빼면(module화), 조건문 분기를 단순화할 수 있다.
 
@@ -16,7 +19,7 @@
     
     session_start();
     
-    echo "<h3>결제하기</h3>";
+    echo "<h3>주문 내역 확인</h3>";
     
     //주문 정보 받아오기
     $name = $_POST['name'];
@@ -32,7 +35,7 @@
 
             display_shipping(); //배송료를 포함한 총합계 구하기
 
-            display_card_form($name); //결제 정보 입력폼 출력
+            //display_card_form($name); //결제 정보 입력폼 출력
             
 
     
@@ -48,7 +51,10 @@
     
 ?>
 
-    
+<div align='center'>
+    <a href='card_info.php?name=<?php echo $name;?>'><img src='img/buy.png'></a><!--*2-->
+    <a href='checkout.php'><img src='img/continue_shopping.png'></a>
+</div>    
     
 
 <?php

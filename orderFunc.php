@@ -26,9 +26,21 @@ customers tb에 customer_id 없으면, 주문자 정보 입력
 원래는 주문정보가 orders tb - order id 얻어 - order_item tb에 들어가야 하는데,
 order_item tb에 곧바로 들어가버린다.
 
+*6
+카드 입력정보를 받아서 처리해주는 함수.
+원래는 true 외에 false도 존재하나, 실습의 편의상 true값만 존재케 함.
+check_process.php에서, $_POST를 $card_info라는 이름으로 넘겨받았다.
+이런 경우 php에서는 별다른 변수 선언이 필요하지 않나 보다.
 -->
 
 <?php
+
+        //*6
+        function check_process($card_info){
+            return true;
+        }
+
+        
         function input_order_info($order_info){
 
         //*1

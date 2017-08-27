@@ -9,6 +9,7 @@ require_once './dbConfig.php';
 require_once './header.php';
 require_once './cartFun.php';
 require_once './display.php';
+require_once './orderFunc.php';
 
 session_start();
 
@@ -31,7 +32,19 @@ if($_SESSION['cart'] && $card_type && $card_number && $card_month && $card_year 
 
     display_shipping();
     
-    echo "감사합니다. 결제 처리가 되었습니다!!!";
+    if(check_process($_POST)){
+        
+        //장바구니 비워준다
+        session_destroy();
+        
+        //결제 처리 완료 메시지
+        echo "<p align='center'>감사합니다. 결제 정상 처리!!! 주문이 완료되었습니다!!!</p>";
+        echo "<div align='center'><a href='index.php'><img src='img/continue_shopping.png'></a></div>";
+    }else{
+        echo "<p>죄송합니다!!! 결제 처리 중 오류가 발생하였습니다. 다시 시도해 주세요!!!</p>";
+        echo "<a href='show_cart.php'>장바구니로...</a>";
+    }
+    
     
 }else{
     echo "<p>결제정보가 제대로 입력되었는지 다시 확인 바랍니다!!!</p>";

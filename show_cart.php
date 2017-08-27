@@ -179,10 +179,17 @@ if(isset($new)){
     }
 }    
 
-echo "<div align='center'>"
-        . "<a href='".$url."'><img src='img/continue_shopping.png'></a> "
-        . "<a href='checkout.php'><img src='img/buy.png'></a> "
-        . "</div>";
+if(isset($_SESSION['cart'])){
+    echo "<div align='center'>"
+            . "<a href='".$url."'><img src='img/continue_shopping.png'></a> "
+            . "<a href='checkout.php'><img src='img/buy.png'></a> "
+            . "</div>";  
+}else{
+    echo "<div align='center'>"
+            ."<a href='".$url."'><img src='img/continue_shopping.png'></a>"
+            ."</div>";
+}
+
 
 /*    
 -----------------------------------------------------------------------------------------

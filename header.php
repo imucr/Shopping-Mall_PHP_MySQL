@@ -7,6 +7,7 @@ background: 입력 후 Ctrl+Space 누르면 색깔 보며 선택 가능. 다른 
 -->
 
 
+
 <html>
     <head>
         <title>Shopping Mall</title>
@@ -29,6 +30,12 @@ background: 입력 후 Ctrl+Space 누르면 색깔 보며 선택 가능. 다른 
             </tr>
             
             <td align="right" valign="bottom">
-                <a href="./show_cart.php">장바구니 보기</a>
+                <?php
+                    if(isset($_SESSION['admin_id'])){
+                        echo "[ <a href='./logout.php'>로그아웃</a> ]";                        
+                    }else{
+                        echo "[ <a href='./show_cart.php'>장바구니 보기</a> ]";
+                    }
+                 ?>
             </td>
         </table>

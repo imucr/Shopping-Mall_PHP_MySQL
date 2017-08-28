@@ -100,6 +100,56 @@ purchase.php로 가는 걸로 해 놓으면, 오류 난다.
                             </form>
                         </table>
             </div> 
-                        
+       
 <?php
     }
+
+    
+    function display_login_form(){
+?>
+
+        <form action='admin.php' method='post'>
+
+            <div align='center'>
+                <div align='center' style='border:1px solid #777; width:300px; padding:10px'>
+
+                    <table border='0' cellpadding='3' cellspading='0'>
+
+                        <tr>
+                            <td align='right'>아이디: </td>
+                            <td><input type='text' name='id'/></td>
+                        </tr>
+
+                        <tr>
+                            <td align='right'>비밀번호: </td>
+                            <td><input type='password' name='pw'/></td>
+                        </tr>
+
+                        <tr>
+                            <td colspan='2' align='center'>
+                                <input type='submit' value='로그인'/>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </div>
+            </div>
+
+        </form>
+            
+<?php            
+    }
+    
+    
+    function display_admin_menu(){
+?>
+        <ul>
+            <li><a href='index.php'>쇼핑몰 메인페이지</a></li>
+            <li><a href='add_category_form.php'>새 카테고리 추가하기</a></li>
+            <li><a href='add_book_form.php'>새 책 추가하기</a></li>
+            <li><a href='change_pw_form.php'>비밀번호 변경하기</a></li>            
+        </ul>            
+<?php            
+    }
+?>    

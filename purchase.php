@@ -14,7 +14,7 @@ checkout.php -> purchase.php -> card_info.php(결제 정보 입력 폼)로 name�
     require_once './dbConfig.php';
     require_once './cartFun.php';
     require_once './orderFunc.php';
-    require_once './display.php';
+    require_once './displayFunc.php';
     require_once './header.php';
     
     session_start();

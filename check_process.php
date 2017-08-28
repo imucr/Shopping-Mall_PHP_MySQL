@@ -8,7 +8,7 @@
 require_once './dbConfig.php';
 require_once './header.php';
 require_once './cartFun.php';
-require_once './display.php';
+require_once './displayFunc.php';
 require_once './orderFunc.php';
 
 session_start();

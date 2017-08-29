@@ -157,12 +157,12 @@ purchase.php로 가는 걸로 해 놓으면, 오류 난다.
     
     function display_categoryAdd_form(){
 ?>        
-        <form method='post' action='add_category'>
+        <form method='post' action='add_category.php'>
             <table border='0'>
 
                 <tr>
                     <td>카테고리명</td>
-                    <td><input type='text' name='catName' size='50' maxlength='50' value=''></td>
+                    <td><input type='text' name='cat_name' size='50' maxlength='50' value=''></td>
                 </tr>
 
                 <tr>

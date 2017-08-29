@@ -9,6 +9,9 @@
     아니라면
             false 반환
 
+*2.
+form에 입력된 값이라면 아무거나 받는다.
+입력되는 값이 배열일 수도 있기에, foreach로 돌린다
 -->
 
 <?php
@@ -38,4 +41,16 @@
             return false;
         }
     }
+    
+//*2    
+    function filled_out($form_elements){
+        foreach($form_elements as $key => $value){ 
+            if(!isset($key) || ($value =='')){
+                return false;
+            }
+        }
+        
+        return true; //false와 true 둘 중 하나만 실행되도록, 이건 else에 집어넣어야 하는 것 아닐까 -?
+    }
+    
 ?>

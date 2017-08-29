@@ -152,4 +152,27 @@ purchase.php로 가는 걸로 해 놓으면, 오류 난다.
         </ul>            
 <?php            
     }
+    
+    
+    
+    function display_categoryAdd_form(){
+?>        
+        <form method='post' action='add_category'>
+            <table border='0'>
+
+                <tr>
+                    <td>카테고리명</td>
+                    <td><input type='text' name='catName' size='50' maxlength='50' value=''></td>
+                </tr>
+
+                <tr>
+                    <td colspan='2' align='center'>
+                        <input type='submit' value='추가' />
+                    </td>
+                </tr>
+
+            </table>
+        </form>
+<?php            
+    }
 ?>    

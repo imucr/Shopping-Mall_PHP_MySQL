@@ -30,4 +30,12 @@
        
     }
 
+    
+    function check_admin(){
+        if(isset($_SESSION['admin_id'])){
+            return true;
+        }else{
+            return false;
+        }
+    }
 ?>

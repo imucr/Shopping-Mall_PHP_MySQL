@@ -17,7 +17,15 @@ purchase.php로 가는 걸로 해 놓으면, 오류 난다.
 
 
 *3
-이미지 추가 기능 더하기 -보류
+    1) 사용처
+        add_book_form.php
+        edit_book_form.php
+
+    2) 구조
+        bookinfo가 배열인 경우 true -> edit 가능
+        bookinfo가 배열이 아닌 경우 false -> 삼항연산자에서 null 값 처리 -> 빈 박스 보임(add 가능)
+
+    *이미지 추가 기능 더하기 -보류
 
 -->
 
@@ -180,21 +188,22 @@ function display_categoryAdd_form(){
 <?php            
     }
 
-function display_book_form(){ //*3
+function display_book_form($bookinfo=''){ //*3
+    $edit = is_array($bookinfo);
 ?>
     <form action="add_book.php" method="post">
             <table border="0">
                 <tr>
                     <td align="right">ISBN: </td>
-                    <td><input type="text" name="isbn" value=""/></td>
+                    <td><input type="text" name="isbn" value="<?php echo $edit ? $bookinfo['isbn']:'';?>"/></td>
                 </tr>
                 <tr>
                     <td align="right">책 제목: </td>
-                    <td><input type="text" name="title" value=""/></td>
+                    <td><input type="text" name="title" value="<?php echo $edit ? $bookinfo['title']:'';?>"/></td>
                 </tr>
                 <tr>
                     <td align="right">저자: </td>
-                    <td><input type="text" name="author" value=""/></td>
+                    <td><input type="text" name="author" value="<?php echo $edit ? $bookinfo['author']:'';?>"/></td>
                 </tr>
                 <tr>
                     <td>카테고리: </td>
@@ -207,7 +216,14 @@ function display_book_form(){ //*3
                                 
                                 if($result){ //*1
                                     while($row=$result->fetch_array()){
-                                        echo "<option value='".$row['cat_id']."'>".$row['cat_name']."</option>";                                    
+                                        echo "<option value='".$row['cat_id']."'";
+                                        
+                                        if(($edit) && ($row['cat_id']==$bookinfo['cat_id'])){
+                                            echo "selected";
+                                        }                                                
+                                            echo">".$row['cat_name']."</option>";                                    
+
+                                        }
                                     }
                                 }
                             ?>
@@ -235,4 +251,34 @@ function display_book_form(){ //*3
     </form>    
 <?php            
     }
+
+
+function display_book_info($bookinfo){
+    if(is_array($bookinfo)){
+        echo "<table><tr>";
+        if(file_exists("img/".$bookinfo['isbn'].".png")){
+            echo "<td><img src='img/".$bookinfo['isbn'].".png' style='border:1px solid black'/></td>";
+        }    
+
+        echo "<td><ul>";
+        echo "<li><strong> 저자: </strong>";
+        echo $bookinfo['author'];
+        echo "</li><li><strong>ISBN: </strong>";
+        echo $bookinfo['isbn'];
+        echo "</li><li><strong>가격: </strong>";
+        echo number_format($bookinfo['price'])."원";
+        echo "</li><li><strong>책 소개: </strong>";
+        echo $bookinfo['description'];
+        echo "</li><ul></td></tr></table>";
+        
+    }else{
+        echo "<p>책 정보를 표시할 수 없습니다.</p>";
+    }
+
+   if($bookinfo['cat_id']){
+       $url="show_category.php?cat_id=".$bookinfo['cat_id'];
+   }    
+    
+    echo "<hr />";
+}
 ?>

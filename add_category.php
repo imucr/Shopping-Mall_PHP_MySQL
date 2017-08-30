@@ -22,7 +22,7 @@
 
 session_start();
 require_once './dbConfig.php';
-require_once './admin_authFunc.php';
+require_once './adminFunc.php';
 require_once './header.php';
 echo "<h3>새 카테고리 추가 확인</h3>";
 

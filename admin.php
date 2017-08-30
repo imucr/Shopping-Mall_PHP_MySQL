@@ -17,7 +17,7 @@
 <?php
 require_once './dbConfig.php';
 require_once './displayFunc.php'; //함수를 담는 파일은 이와 같이 ~Func 붙이는 것이 관례인 듯.
-require_once './admin_authFunc.php';
+require_once './adminFunc.php';
 session_start();
 
 

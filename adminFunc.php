@@ -12,6 +12,17 @@
 *2.
 form에 입력된 값이라면 아무거나 받는다.
 입력되는 값이 배열일 수도 있기에, foreach로 돌린다
+
+
+*3. 
+이미 있는 isbn을 추가하려고 하면, 아래처럼 오류 메시지 두 개가 뜬다. 하나만 뜨게 할 수 없을까 -?X: 해결
+
+                echo "<p>책이 이미 존재하거나, 추가 시 데이터베이스 오류 발생.<p>";
+                echo "<p align='center'><a href='add_book_form.php'>다시 입력하기</a></p>";
+
+                echo "<p>새 책 추가 시 오류 발생!</p>";
+                echo "<p align='center'><a href='add_book_form.php'>다시 입력하기</a></p>";
+
 -->
 
 <?php
@@ -73,4 +84,24 @@ form에 입력된 값이라면 아무거나 받는다.
             }
         }        
 
+function add_book($isbn, $title, $author, $cat_id, $price, $description){
+    $db= db_conn();  
+    $sql="select * from books where isbn='".$isbn."'";
+    $result=$db->query($sql);
+
+//    
+    if((!$result) || ($result->num_rows != 0)){ //*3
+        return false;
+    }    
+
+//    
+    $sql = "insert into books values('".$isbn."', '".$author."','".$title."','".$cat_id."','".$price."','".$description."')";            
+    $result=$db->query($sql);
+            
+    if(!$result){
+        return false;
+    }else{
+        return true;
+    }    
+}        
 ?>

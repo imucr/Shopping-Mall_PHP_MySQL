@@ -11,7 +11,7 @@
 
 <?php
     require_once './dbConfig.php';
-    require_once './admin_authFunc.php';
+    require_once './adminFunc.php';
     require_once './displayFunc.php';
     session_start();
     require_once './header.php';

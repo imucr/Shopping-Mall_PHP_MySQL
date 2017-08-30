@@ -5,7 +5,7 @@
 <?php
 
 session_start();
-require_once './admin_authFunc.php';
+require_once './adminFunc.php';
 require_once './displayFunc.php';
 require_once './header.php';
 

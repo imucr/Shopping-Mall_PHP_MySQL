@@ -15,6 +15,10 @@ purchase.php로 가는 걸로 해 놓으면, 오류 난다.
 이렇듯 기술적인 문제로 표현하고 싶은 걸 못 표현하는 경우가 왕왕 발생할 듯.
 이유 -?
 
+
+*3
+이미지 추가 기능 더하기 -보류
+
 -->
 
 <?php
@@ -176,7 +180,7 @@ function display_categoryAdd_form(){
 <?php            
     }
 
-function display_book_form(){
+function display_book_form(){ //*3
 ?>
     <form action="add_book.php" method="post">
             <table border="0">

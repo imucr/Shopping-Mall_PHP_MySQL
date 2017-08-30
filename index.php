@@ -28,6 +28,7 @@ cat_name을 클릭하면 show_category.php로 이동한다
 
 <?php
     require_once("./dbconfig.php");
+    session_start();
     
     $sql='select cat_id, cat_name from categories';
     $db= db_conn();
@@ -84,13 +85,19 @@ cat_name을 클릭하면 show_category.php로 이동한다
         <?php
                 echo "</li>";
             }
-                    echo "</ul>";
+             echo "</ul>";
 
 
 
 //*7
-                    echo "<hr />";
+             echo "<hr />";
                     
+             if(isset($_SESSION['admin_id'])){
+                 echo "<div align='center'>"
+                         ."<a href='admin.php'>관리자 페이지로</a>"
+                         ."</div>";
+             }
+             
      require_once('./footer.php');
 
         ?>

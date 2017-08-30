@@ -53,4 +53,24 @@ form에 입력된 값이라면 아무거나 받는다.
         return true; //false와 true 둘 중 하나만 실행되도록, 이건 else에 집어넣어야 하는 것 아닐까 -?
     }
     
+    
+    
+    function add_category($cat_name){
+        $db = db_conn();
+        $sql = "select * from categories where cat_name='" . $cat_name . "'";
+        $result = $db->query($sql);
+
+        if ((!$result) || ($result->num_rows != 0)) {
+            return false;
+        } 
+            $sql = "insert into categories values('', '" . $cat_name . "')";
+            $result = $db->query($sql);
+            
+            if (!$result) { //sql 수행이 안 되면
+                return false;
+            } else {
+                return true;
+            }
+        }        
+
 ?>

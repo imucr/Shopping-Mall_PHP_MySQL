@@ -44,6 +44,7 @@ if(isset($_POST['id']) && isset($_POST['pw'])){
         display_admin_menu();        
     }else{
         echo '<p>관리자만이 볼 수 있는 페이지입니다.</p>';
+        echo "<a href='adminLogin.php'>관리자 로그인</a>";
     }
 
 ?>

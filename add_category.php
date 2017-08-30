@@ -46,6 +46,8 @@ if(check_admin()){
     }
 }else{
     echo "<p>관리자만이 이용할 수 있는 페이지입니다. 관리자 인증을 하시기 바랍니다.</p>";
+    echo "<a href='adminLogin.php'>관리자 로그인</a>";
+    
 }
 
 require_once './footer.php';

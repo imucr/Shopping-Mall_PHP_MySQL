@@ -18,7 +18,7 @@ purchase.php로 가는 걸로 해 놓으면, 오류 난다.
 -->
 
 <?php
-    function display_shipping($shipping=2500){
+function display_shipping($shipping=2500){
 ?>
             <table border='0' width='100%' cellspacing='0'>
                 <tr><td colspan='4' align='right'> 배송비: </td>
@@ -31,7 +31,7 @@ purchase.php로 가는 걸로 해 놓으면, 오류 난다.
 ?>    
     
 <?php
-    function display_card_form($name){
+function display_card_form($name){
 ?>         
             <div style="margin:20px;">
                         <table border='0' width='60%' cellspacing='0' align="center">
@@ -105,7 +105,7 @@ purchase.php로 가는 걸로 해 놓으면, 오류 난다.
     }
 
     
-    function display_login_form(){
+function display_login_form(){
 ?>
 
         <form action='admin.php' method='post'>
@@ -142,7 +142,7 @@ purchase.php로 가는 걸로 해 놓으면, 오류 난다.
     }
     
     
-    function display_admin_menu(){
+function display_admin_menu(){
 ?>
         <ul>
             <li><a href='index.php'>쇼핑몰 메인페이지</a></li>
@@ -155,7 +155,7 @@ purchase.php로 가는 걸로 해 놓으면, 오류 난다.
     
     
     
-    function display_categoryAdd_form(){
+function display_categoryAdd_form(){
 ?>        
         <form method='post' action='add_category.php'>
             <table border='0'>
@@ -175,4 +175,60 @@ purchase.php로 가는 걸로 해 놓으면, 오류 난다.
         </form>
 <?php            
     }
-?>    
+
+function display_book_form(){
+?>
+    <form action="add_book.php" method="post">
+            <table border="0">
+                <tr>
+                    <td align="right">ISBN: </td>
+                    <td><input type="text" name="isbn" value=""/></td>
+                </tr>
+                <tr>
+                    <td align="right">책 제목: </td>
+                    <td><input type="text" name="title" value=""/></td>
+                </tr>
+                <tr>
+                    <td align="right">저자: </td>
+                    <td><input type="text" name="author" value=""/></td>
+                </tr>
+                <tr>
+                    <td>카테고리: </td>
+                    <td>
+                        <select name="cat_id">
+                            <?php
+                                $db= db_conn();
+                                $sql="select * from categories";
+                                $result=$db->query($sql);
+                                
+                                if($result){ //*1
+                                    while($row=$result->fetch_array()){
+                                        echo "<option value='".$row['cat_id']."'>".$row['cat_name']."</option>";                                    
+                                    }
+                                }
+                            ?>
+                        </select>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td align="right">가격: </td>
+                    <td><input type="text" name="price" value=""/></td>
+                </tr>
+
+                <tr>
+                    <td align="right">책 소개: </td>
+                    <td><textarea rows="3" cols="50" name="description"></textarea></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="submit" value="추가하기" />
+                    </td>
+                </tr>
+                    
+            </table>
+    </form>    
+<?php            
+    }
+?>

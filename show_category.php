@@ -26,26 +26,19 @@ vs. fetch_array, fetch_assoc, fetch_row
 <?php
     
     require_once("./dbconfig.php");
-
+    require_once ("./bookFunc.php");
+    session_start(); //이건 어디에 필요 -?
+    require_once("./header.php");
+        
     $cat_id = $_GET['cat_id'];
 
-
 //*1      
-    $sql = "select cat_name from categories where cat_id='".$cat_id."'";
-    $db= db_conn();
-    $result = $db->query($sql);
-    if($result){
-        $num_cats = $result->num_rows;
-        if($num_cats == 0){
-            echo "카테고리가 존재하지 않네요";
-        }
-        
-        $row = $result->fetch_object();
-        $cat_name = $row->cat_name;
-        
-        require_once("./header.php");
-        
+    if(get_category_name($cat_id)){
         echo "<h3>".$cat_name."</h3>";
+    }else{
+        echo "<p align='center'>카테고리가 존재하지 않습니다.</p>";
+    }
+
         
 //*2          
         $sql="select * from books where cat_id = '".$cat_id."'";
@@ -94,7 +87,7 @@ vs. fetch_array, fetch_assoc, fetch_row
         echo "<hr />";
 
         } 
-    }   
+        
         echo "<div align='center'><a href='index.php'><img src='img/continue_shopping.png' border='0'></a></div>";
     
      require_once('./footer.php');

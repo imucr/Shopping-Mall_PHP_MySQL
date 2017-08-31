@@ -22,8 +22,16 @@ purchase.php로 가는 걸로 해 놓으면, 오류 난다.
         edit_book_form.php
 
     2) 구조
-        bookinfo가 배열인 경우 true -> edit 가능
-        bookinfo가 배열이 아닌 경우 false -> 삼항연산자에서 null 값 처리 -> 빈 박스 보임(add 가능)
+        (1) bookinfo가 배열인 경우 true
+            -> edit 가능
+            -> [수정하기], [삭제하기] 버튼 보임 -td 하나 더 추가
+        (2) bookinfo가 배열이 아닌 경우 false -> 삼항연산자에서 null 값 처리
+            -> 빈 박스 보임(add 가능)
+            -> [추가하기] 버튼 보임                 -td colspan='2'
+
+        (3) 두 버튼 사이가 </form>으로 끊어져서, table 안에 table을 또 넣음으로, 두 버튼이 나란히 보이게 함
+
+        (4) form이 두 번 쓰인 것을 주목
 
     *이미지 추가 기능 더하기 -보류
 
@@ -191,8 +199,8 @@ function display_categoryAdd_form(){
 function display_book_form($bookinfo=''){ //*3
     $edit = is_array($bookinfo);
 ?>
-    <form action="add_book.php" method="post">
-            <table border="0">
+    <form action="<?php echo $edit ? 'edit_book.php':'add_book.php';?>" method="post">
+            <table border="0" align="center">
                 <tr>
                     <td align="right">ISBN: </td>
                     <td><input type="text" name="isbn" value="<?php echo $edit ? $bookinfo['isbn']:'';?>"/></td>
@@ -225,7 +233,6 @@ function display_book_form($bookinfo=''){ //*3
 
                                         }
                                     }
-                                }
                             ?>
                         </select>
                     </td>
@@ -233,22 +240,40 @@ function display_book_form($bookinfo=''){ //*3
                 
                 <tr>
                     <td align="right">가격: </td>
-                    <td><input type="text" name="price" value=""/></td>
+                    <td><input type="text" name="price" value="<?php echo $edit ? $bookinfo['price']:'';?>"/></td>
                 </tr>
 
                 <tr>
                     <td align="right">책 소개: </td>
-                    <td><textarea rows="3" cols="50" name="description"></textarea></td>
+                    <td><textarea rows="3" cols="50" name="description"><?php echo $edit ? $bookinfo['description']:'';?></textarea></td>
                 </tr>
 
                 <tr>
                     <td colspan="2" align="center">
-                        <input type="submit" value="추가하기" />
+                        
+                        <table border="0">
+                            <tr>
+                                <td>
+                                    <input type="submit" value="<?php echo $edit ? '수정':'추가';?>하기" /></form>
+                                </td>
+                                <?php
+                                if($edit){
+                                    echo "<td>"
+                                                . "<form method ='post' action = 'delete_book.php' style='margin-bottom:0'>"
+                                                    ."<input type='submit' value='삭제하기' />"
+                                                ."</form>"
+                                            ."</td>";
+                                }
+                                ?>
+                            </tr>
+                        </table>
+                        
                     </td>
                 </tr>
-                    
             </table>
-    </form>    
+
+        </hr>
+        
 <?php            
     }
 
@@ -275,7 +300,7 @@ function display_book_info($bookinfo){
         echo "<p>책 정보를 표시할 수 없습니다.</p>";
     }
 
-   if($bookinfo['cat_id']){
+   if($bookinfo['cat_id']){ //이 조건문은, show_book.php의 else 조건문 안에 넣어야 하는 것 아닐까? $url이 그쪽으로 안 넘어감.
        $url="show_category.php?cat_id=".$bookinfo['cat_id'];
    }    
     

@@ -1,14 +1,20 @@
 <?php
 
+    require_once './dbConfig.php';
     require_once './displayFunc.php';
     require_once './adminFunc.php';
     require_once './bookFunc.php';
     session_start();
     require './header.php'; //require_once와 다른 건가 -?
+    
+    echo "<h3>책 정보 수정</h3>";
 
     if(check_admin()){
         if($bookinfo = get_book_info($_GET['isbn'])){
             display_book_form($bookinfo);        
+            echo "<p align='center'><a href='admin.php'>관리자 페이지로</a></p>";                
+        }else{
+            echo "책 정보를 검색할 수 없습니다.";
         }
         
     }else{

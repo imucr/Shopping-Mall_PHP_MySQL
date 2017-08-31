@@ -24,6 +24,10 @@ single quatation은, $isbn이 아니라 url을 감싼다. 틀리면 isbn이 edit
 //책 정보 get하여, display한다  
     $bookinfo = get_book_info($isbn);
 
+    if(is_array($bookinfo)){
+        echo "<h3>".$bookinfo['title']."</h3>";
+    }
+    
     display_book_info($bookinfo);
     
    

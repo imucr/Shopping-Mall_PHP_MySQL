@@ -41,6 +41,7 @@
 
              if($result){
                  echo "<p align='center'>책 정보가 정상적으로 수정되었습니다.</p>";
+                 echo "<p align='center'><a href='show_book.php?isbn=".$isbn."'>확인하기</a></p>"; //single quatation 주목!
              }else{
                  echo "<p align='center'>DB 수정 오류 발생.</p>";                 
              }
@@ -57,7 +58,7 @@
         echo "<p align='center'><a href='admin.php'>관리자 메뉴</a></p>";            
         
     }else{
-        echo "<p>관리자만 볼 수 있는 페이지입니다. 관리자 인증을 하시기 바랍니다.</p>";
+        echo "<p align='center'>관리자만 볼 수 있는 페이지입니다. 관리자 인증을 하시기 바랍니다.</p>";
         echo "<p align='center'><a href='admin.php'>관리자 메뉴</a></p>";      
     }
     

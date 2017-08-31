@@ -33,6 +33,10 @@ purchase.php로 가는 걸로 해 놓으면, 오류 난다.
 
         (4) form이 두 번 쓰인 것을 주목
 
+        (5) bookinfo가 배열인 경우, 특정 isbn의 해당 카테고리명 선택되어 보이게 하는 로직: 조건문 구조 -?
+            <option value= 카테고리아이디 selected> 카테고리명 </option>
+
+
     *이미지 추가 기능 더하기 -보류
 
 -->
@@ -222,7 +226,7 @@ function display_book_form($bookinfo=''){ //*3
                                 $sql="select * from categories";
                                 $result=$db->query($sql);
                                 
-                                if($result){ //*1
+                                if($result){
                                     while($row=$result->fetch_array()){
                                         echo "<option value='".$row['cat_id']."'";
                                         
@@ -262,6 +266,7 @@ function display_book_form($bookinfo=''){ //*3
                                     echo "<td>"
                                                 . "<form method ='post' action = 'delete_book.php' style='margin-bottom:0'>"
                                                     ."<input type='hidden' name='isbn' value='".$bookinfo['isbn']."'/>" //name은 뭘로 하든 상관 없다
+                                                    ."<input type='hidden' name='cat_id' value='".$bookinfo['cat_id']."'/>"                                            
                                                     ."<input type='submit' value='삭제하기' />"
                                                 ."</form>"
                                             ."</td>";

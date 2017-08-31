@@ -254,12 +254,14 @@ function display_book_form($bookinfo=''){ //*3
                         <table border="0">
                             <tr>
                                 <td>
+                                    <?php if($edit){ echo "<input type='hidden' name='old_isbn' value='".$bookinfo['isbn']."'/>";} ?>
                                     <input type="submit" value="<?php echo $edit ? '수정':'추가';?>하기" /></form>
                                 </td>
                                 <?php
                                 if($edit){
                                     echo "<td>"
                                                 . "<form method ='post' action = 'delete_book.php' style='margin-bottom:0'>"
+                                                    ."<input type='hidden' name='isbn' value='".$bookinfo['isbn']."'/>" //name은 뭘로 하든 상관 없다
                                                     ."<input type='submit' value='삭제하기' />"
                                                 ."</form>"
                                             ."</td>";

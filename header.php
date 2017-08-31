@@ -32,7 +32,7 @@ background: 입력 후 Ctrl+Space 누르면 색깔 보며 선택 가능. 다른 
             <td align="right" valign="bottom">
                 <?php
                     if(isset($_SESSION['admin_id'])){
-                        echo "[ <a href='./logout.php'>로그아웃</a> ]";                        
+                        echo "[ <a href='./logout.php'>로그아웃</a> ]"; //로그아웃 로직 만들기!                        
                     }else{
                         echo "[ <a href='./show_cart.php'>장바구니 보기</a> ]";
                     }

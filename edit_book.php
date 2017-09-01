@@ -59,7 +59,7 @@
         
     }else{
         echo "<p align='center'>관리자만 볼 수 있는 페이지입니다. 관리자 인증을 하시기 바랍니다.</p>";
-        echo "<p align='center'><a href='admin.php'>관리자 메뉴</a></p>";      
+        echo "<p align='center'><a href='adminLogin.php'>관리자 로그인</a></p>";      
     }
     
     require_once './footer.php';

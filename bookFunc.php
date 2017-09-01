@@ -37,4 +37,26 @@ function get_category_name($cat_id){
     }
 }  
 
+
+function get_books($cat_id){
+    $sql="select * from books where cat_id = '".$cat_id."'";
+    $db= db_conn();
+    $result = $db->query($sql);
+        if($result){
+            $num_books = $result->num_rows;
+            if($num_books == 0){
+                return false;
+            }
+            
+            $books=array();
+
+            for($count=0; $row = $result->fetch_array(); $count++){
+                $books[$count] = $row;
+            }
+            return $books;
+        }else{
+            return false;
+        }
+}
+
 ?>

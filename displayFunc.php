@@ -9,12 +9,14 @@
 
     [쇼핑하기]는, [구매하기] 버튼과 나란히 출력하기 위해.
 
+--------------------------------------------------------------------
 
 *2
 purchase.php로 가는 걸로 해 놓으면, 오류 난다. 
 이렇듯 기술적인 문제로 표현하고 싶은 걸 못 표현하는 경우가 왕왕 발생할 듯.
 이유 -?
 
+--------------------------------------------------------------------
 
 *3
     1) 사용처
@@ -33,11 +35,17 @@ purchase.php로 가는 걸로 해 놓으면, 오류 난다.
 
         (4) form이 두 번 쓰인 것을 주목
 
-        (5) bookinfo가 배열인 경우, 특정 isbn의 해당 카테고리명 선택되어 보이게 하는 로직: 조건문 구조 -?
-            <option value= 카테고리아이디 selected> 카테고리명 </option>
-
+        (5) bookinfo가 배열인 경우, 특정 isbn의 해당 카테고리명 선택되어 보이게 하는 조건문 구조 -?X
+            SQL이 정상 수행된다면
+                    책 정보를 모두 받았고, DB의 카테 ID와 책 정보의 ID가 같다면
+                            -selected 출력
 
     *이미지 추가 기능 더하기 -보류
+
+--------------------------------------------------------------------
+
+*4
+$books는 그냥 일반배열 아닌가? 어떻게 연관배열처럼 이용을 하고 있는 걸까 -?
 
 -->
 
@@ -179,24 +187,50 @@ function display_admin_menu(){
     
     
     
-function display_categoryAdd_form(){
+function display_category_form($category=''){
+    $edit = is_array($category);
 ?>        
-        <form method='post' action='add_category.php'>
-            <table border='0'>
+        <form method='post' action='<?php echo $edit?"edit_category.php":"add_category.php";?>'>
+            <table border='0' align='center'>
 
                 <tr>
                     <td>카테고리명</td>
-                    <td><input type='text' name='cat_name' size='50' maxlength='50' value=''></td>
+                    <td><input type='text' name='cat_name' size='50' maxlength='50' 
+                                       value='<?php echo $edit? $category["cat_name"]:"";?>'></td>
                 </tr>
 
                 <tr>
                     <td colspan='2' align='center'>
-                        <input type='submit' value='추가' />
+                        <table>
+                            <tr>
+
+                                <td>
+                                    <?php
+                                    if($edit){
+                                        echo "<input type='hidden' name='cat_id' value='".$category['cat_id']."'/>";
+                                    }
+                                    ?>
+                                    <input type='submit' value='<?php echo $edit?"수정하기":"추가하기";?>'/></form>
+                                </td>
+
+                                <?php
+                                if($edit){
+                                    echo "<td>"
+                                                ."<form method='post' action='delete_category.php' style='margin-bottom:0'>"
+                                                    ."<input type='hidden' name='cat_id' value='".$category['cat_id']."'/>"
+                                                    ."<input type='submit' value='삭제하기'/>"
+                                                ."</form>"
+                                            . "</td>";
+                                }
+                                ?>
+                                
+                            </tr>
+                        </table>
                     </td>
                 </tr>
 
             </table>
-        </form>
+
 <?php            
     }
 
@@ -230,7 +264,7 @@ function display_book_form($bookinfo=''){ //*3
                                     while($row=$result->fetch_array()){
                                         echo "<option value='".$row['cat_id']."'";
                                         
-                                        if(($edit) && ($row['cat_id']==$bookinfo['cat_id'])){
+                                        if(($edit) && ($row['cat_id']==$bookinfo['cat_id'])){ //$edit['cat_id']라고 써도 될까 -?
                                             echo "selected";
                                         }                                                
                                             echo">".$row['cat_name']."</option>";                                    
@@ -312,5 +346,35 @@ function display_book_info($bookinfo){
    }    
     
     echo "<hr />";
+}
+
+function display_books($books){
+            if(!is_array($books)){
+                echo "<p>카테고리에 해당하는 책이 존재하지 않습니다.</p>";
+            }else{
+                echo "<table width='100%' border='0'>";
+            
+                foreach($books as $row){ //*4
+                    $url='show_book.php?isbn='.$row['isbn'];                  
+                    echo "<tr><td>";
+                    if(file_exists("img/".$row['isbn'].".png")){
+                        $book_img="<img src='img/".$row['isbn'].".png' style='border: 1px solid black' width=100px height=120px/>";
+                      ?>
+                        <a href="<?php echo $url; ?>"><?php echo $book_img; ?></a>
+                <?php
+                }else{
+                    echo "&nbsp;";
+                }
+                echo "</td><td>";
+                $title=$row['title'].", 저자: ".$row['author'];
+                ?>
+                    
+                <a href="<?php echo $url; ?>"><?php echo $title; ?></a>    
+                <?php
+                echo "</td></tr>";
+              } //foreach문의 끝
+              echo "</table>";        
+        }
+        echo "<hr />";        
 }
 ?>
